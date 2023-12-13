@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <select name="selectEstresse" id="Estresse"> <br>
+        <option value="Baixo">Baixo</option>
+        <option value="Medio">Médio</option>
+        <option value="Alto">Alto</option>
+    </select>
+    <button onclick="taca.beber()">
+        BEBER
+    </button><br> <br>
+    <button onclick="vinho.comprar()">
+        COMPRAR
+    </button>
+    <button onclick="vinho.abrir()">
+        ABRIR
+    </button>
+    <button onclick="vinho.encher()">
+        ENCHER
+    </button>
+    <button onclick="vinho.descartar()">
+        DESCARTAR
+    </button> <br> <br>
+    <div id="div"></div>
+</body>
+
+</html>
+<script>
+    var vinho = {
+        quantidade: 0,
+        volume: 0,
+        marca: "XV De Novembro",
+        tipo: "Tinto Suave",
+        comprar: function () {
+            const contador = this.quantidade + 1
+            this.quantidade = contador
+            console.log(this.quantidade)
+        },
+        abrir: function () {
+            if (this.volume > 0) {
+                alert(`Precisa Acabar a Garrafa primeiro, ainda faltam ${vinho.volume}ml`);
+            } else {
+                this.volume = 750;
+                div.innerHTML += `Você abriu uma garrafa <br>`;
+            }
+        },
+        encher: function () {
+            if (this.volume <= 0) {
+                alert(`Você não tem garrafas abertas`)
+            }
+            else if (taca.volume >= taca.volumeTotal) {
+                alert(`Taça Cheia, Beba primeiro`)
+            } else if (pessoa.estresse == "Alto") {
+                var mensagem = `Você acabou a garrafa`
+                taca.volume = this.volume;
+                this.volume = 0
+                if (taca.volume == 750) {
+                    mensagem += ` e encheu a taça..`
+                }
+                mensagem += ` <br>`
+                div.innerHTML += mensagem
+            } else if (pessoa.estresse == "Médio") {
+                if (this.volume > 550) {
+                    volumeGarrafa = this.volume - 550
+                    taca.volume = 550;
+                    this.volume = volumeGarrafa;
+                } else {
+                    var mensagem = `Você acabou a garrafa <br>`
+                    taca.volume = this.volume;
+                    this.volume = 0
+                    div.innerHTML += mensagem
+                }
+            }
+        },
+        descartar: function () { },
+    };
+
+    var pessoa = {
+        nome: "Vivian",
+        profissao: "Professora",
+        estresse: "Alto",
+        limiteAlcoolico: 1500,
+        quantidadeBebida: 0,
+    };
+
+    var taca = {
+        volumeTotal: 750,
+        volume: 0,
+        beber: function () { },
+    };
+</script>
