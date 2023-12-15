@@ -39,7 +39,8 @@
 <script>
 	function beberVinho() {
 		var bebada = pessoa.quantidadeBebida;
-		var nivelStress = pessoa.estresse;
+		var nivelStress = Estresse.value;
+		pessoa.estresse = nivelStress;
 		var tamanhoGole = 0;
 		var mensagem = ``;
 
@@ -108,7 +109,7 @@
 		if (bebeuDemais <= 0) {
 			grauBebada = `De boassa`;
 			mensagem += `Você se recuperou, já pode beber de novo. <br>`;
-			bebada = 0;
+			bebeuDemais = 0;
 		} else if (bebeuDemais >= pessoa.limiteAlcoolico) {
 			grauBebada = `Muito Louca`;
 			mensagem += `Você ainda está muito louca, descanse mais. <br>`;
