@@ -1,98 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <select name="selectEstresse" id="Estresse"> <br>
-        <option value="Baixo">Baixo</option>
-        <option value="Medio">Médio</option>
-        <option value="Alto">Alto</option>
-    </select>
-    <button onclick="taca.beber()">
-        BEBER
-    </button><br> <br>
-    <button onclick="vinho.comprar()">
-        COMPRAR
-    </button>
-    <button onclick="vinho.abrir()">
-        ABRIR
-    </button>
-    <button onclick="vinho.encher()">
-        ENCHER
-    </button>
-    <button onclick="vinho.descartar()">
-        DESCARTAR
-    </button> <br> <br>
-    <div id="div"></div>
-</body>
-
+	<body>
+		<div id="nome"></div>
+		<br />
+		<div id="profissao"></div>
+		<br />
+		<div id="taBebada">Grau alcoolico: De boassa</div>
+		<br />
+		<div class="nivelDeStress">
+			Nível de Stress:
+			<select name="selectEstresse" id="Estresse">
+				<br />
+				<option value="Baixo">Baixo</option>
+				<option value="Medio">Médio</option>
+				<option value="Alto">Alto</option>
+			</select>
+		</div>
+		<br /><br />
+		<div class="buttons">
+			<button onclick="encherTaca()">ENCHER TAÇA</button>
+			<button onclick="beberVinho()">BEBER VINHO</button>
+			<button onclick="descartarTaca()">DESCARTAR VINHO</button>
+			<br /><br />
+			<button onclick="vinho.comprar()">COMPRAR GARRAFA</button>
+			<button onclick="abrirGarrafa()">ABRIR GARRAFA</button><br />
+			<br /><br />
+		</div>
+		<div id="div"></div>
+	</body>
 </html>
 <script>
-    var vinho = {
-        quantidade: 0,
-        volume: 0,
-        marca: "XV De Novembro",
-        tipo: "Tinto Suave",
-        comprar: function () {
-            const contador = this.quantidade + 1
-            this.quantidade = contador
-            console.log(this.quantidade)
-        },
-        abrir: function () {
-            if (this.volume > 0) {
-                alert(`Precisa Acabar a Garrafa primeiro, ainda faltam ${vinho.volume}ml`);
-            } else {
-                this.volume = 750;
-                div.innerHTML += `Você abriu uma garrafa <br>`;
-            }
-        },
-        encher: function () {
-            if (this.volume <= 0) {
-                alert(`Você não tem garrafas abertas`)
-            }
-            else if (taca.volume >= taca.volumeTotal) {
-                alert(`Taça Cheia, Beba primeiro`)
-            } else if (pessoa.estresse == "Alto") {
-                var mensagem = `Você acabou a garrafa`
-                taca.volume = this.volume;
-                this.volume = 0
-                if (taca.volume == 750) {
-                    mensagem += ` e encheu a taça..`
-                }
-                mensagem += ` <br>`
-                div.innerHTML += mensagem
-            } else if (pessoa.estresse == "Médio") {
-                if (this.volume > 550) {
-                    volumeGarrafa = this.volume - 550
-                    taca.volume = 550;
-                    this.volume = volumeGarrafa;
-                } else {
-                    var mensagem = `Você acabou a garrafa <br>`
-                    taca.volume = this.volume;
-                    this.volume = 0
-                    div.innerHTML += mensagem
-                }
-            }
-        },
-        descartar: function () { },
-    };
+	function beberVinho() {
+		var bebada = pessoa.quantidadeBebida;
+		var nivelStress = pessoa.estresse;
+		var tamanhoGole = 0;
+		var mensagem = ``;
 
-    var pessoa = {
-        nome: "Vivian",
-        profissao: "Professora",
-        estresse: "Alto",
-        limiteAlcoolico: 1500,
-        quantidadeBebida: 0,
-    };
+		if (taca.volume <= 0) {
+			mensagem = `Você não tem vinho na taça. <br>`;
+			div.innerHTML = mensagem;
+		} else if (bebada >= pessoa.limiteAlcoolico) {
+			mensagem = `Você já está muito louca, não aguenta mais beber. <br>`;
+			div.innerHTML = mensagem;
+		} else {
+			if (nivelStress == "Alto") {
+				tamanhoGole = 300;
+			} else if (nivelStress == "Medio") {
+				tamanhoGole = 200;
+			} else if (nivelStress == "Baixo") {
+				tamanhoGole = 100;
+			}
 
-    var taca = {
-        volumeTotal: 750,
-        volume: 0,
-        beber: function () { },
-    };
+			taca.beber(tamanhoGole);
+		}
+	}
+
+	function abrirGarrafa() {
+		var mensagem = ``;
+		if (vinho.volume > 0) {
+			mensagem = `Precisa Acabar a Garrafa primeiro, ainda faltam ${vinho.volume}ml <br>`;
+			div.innerHTML = mensagem;
+		} else if (vinho.quantidade <= 0) {
+			mensagem = `Você não tem mais garrafas na sua adega <br>`;
+			div.innerHTML = mensagem;
+		} else {
+			vinho.abrir();
+		}
+	}
+	function encherTaca() {
+		var nivelStress = pessoa.estresse;
+		var mensagem = ``;
+
+		if (vinho.volume <= 0) {
+			mensagem = `Você não tem garrafas abertas. <br>`;
+			div.innerHTML = mensagem;
+		} else if (taca.volume > 0) {
+			mensagem = `Ainda contém vinho na taça, beba primeiro. <br>`;
+			div.innerHTML = mensagem;
+		} else {
+			vinho.encher(nivelStress);
+		}
+	}
+
+	function descartarTaca() {
+		if (taca.volume <= 0) {
+			var mensagem = `Você não tem vinho na taça. <br>`;
+			div.innerHTML = mensagem;
+		} else if (taca.volume > 0) {
+			taca.descartar();
+		}
+	}
+
+	var vinho = {
+		quantidade: 0,
+		volume: 0,
+		marca: "XV De Novembro",
+		tipo: "Tinto Suave",
+		comprar: function () {
+			const totalVinhos = this.quantidade + 1;
+			this.quantidade = totalVinhos;
+			console.log(this.quantidade);
+
+			div.innerHTML = `Você tem ${this.quantidade} garrafas  de vinho na sua adega <br>`;
+		},
+
+		abrir: function () {
+			const stress = Estresse.value;
+			pessoa.estresse = stress;
+
+			this.volume = 750;
+			this.quantidade -= 1;
+			var mensagem = `Você abriu uma garrafa e ficou com ${this.quantidade} garrafas na sua adega <br>`;
+			div.innerHTML = mensagem;
+		},
+
+		encher: function (stress) {
+			var mensagem = ``;
+			var quantEnchida = 0;
+			var volumeGarrafa = this.volume;
+
+			if (stress == "Alto") {
+				quantEnchida = volumeGarrafa;
+				mensagem = `Nível de stress alto, você encheu a taça <br>`;
+			} else if (stress == "Medio") {
+				quantEnchida = 550;
+				mensagem = `Nível de stress médio, você encheu 3/4 da taça <br>`;
+			} else if (stress == "Baixo") {
+				quantEnchida = 350;
+				mensagem = `Nível de stress baixo, você encheu 1/2 taça <br>`;
+			} else {
+				console.log(`erro ao resgatar nível de stress`);
+			}
+
+			if (volumeGarrafa >= quantEnchida) {
+				taca.volume = quantEnchida;
+				volumeGarrafa -= quantEnchida;
+			} else {
+				mensagem = `Nível de stress ${stress.toLowerCase()}, você virou a garrafa mas só tinha ${volumeGarrafa}ml na garrafa <br>`;
+
+				taca.volume = volumeGarrafa;
+				volumeGarrafa = 0;
+			}
+
+			this.volume = volumeGarrafa;
+			div.innerHTML = mensagem;
+		},
+	};
+
+	var pessoa = {
+		nome: "Amanda",
+		profissao: "SP Techer",
+		estresse: "",
+		limiteAlcoolico: 1500,
+		quantidadeBebida: 0,
+	};
+
+	var taca = {
+		volumeTotal: 750,
+		volume: 0,
+		beber: function (gole) {
+			var tamanhoGole = gole;
+			var mensagem = ``;
+			var bebada = document.getElementById("taBebada");
+			var grauBebada = ``;
+
+			if (tamanhoGole >= this.volume) {
+				this.volume = 0;
+				mensagem = `Você acabou a taça. <br>`;
+			} else {
+				this.volume -= tamanhoGole;
+				mensagem = `Você bebeu ${tamanhoGole}ml, ainda restam ${this.volume}ml na taça <br>`;
+			}
+			pessoa.quantidadeBebida += tamanhoGole;
+
+			if (pessoa.quantidadeBebida >= pessoa.limiteAlcoolico) {
+				grauBebada = `Muito Louca`;
+				mensagem += `Você já está muito louca, não aguenta mais beber. <br>`;
+			} else if (pessoa.quantidadeBebida >= pessoa.limiteAlcoolico / 2) {
+				grauBebada = `Bebada`;
+				mensagem += `Você já está bebada, melhor maneirar. <br>`;
+			} else {
+				grauBebada = `De boassa`;
+			}
+
+			div.innerHTML = mensagem;
+			bebada.innerHTML = `Grau alcoolico: ${grauBebada}`;
+		},
+		descartar: function () {
+			this.volume = 0;
+
+			var mensagem = `Você descartou o vinho da taça. <br>`;
+			div.innerHTML = mensagem;
+		},
+	};
+
+	function atribuirValores() {
+		nomePessoa = document.getElementById("nome");
+		profissaoPessoa = document.getElementById("profissao");
+
+		nomePessoa.innerHTML = `Nome: ${pessoa.nome}`;
+		profissaoPessoa.innerHTML = `Profissão: ${pessoa.profissao}`;
+	}
+
+	atribuirValores();
 </script>
+
+<style>
+	body {
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
