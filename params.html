@@ -24,12 +24,13 @@
 		</div>
 		<br /><br />
 		<div class="buttons">
-			<button onclick="encherTaca()">ENCHER TAÇA</button>
 			<button onclick="beberVinho()">BEBER VINHO</button>
 			<button onclick="descartarTaca()">DESCARTAR VINHO</button>
+			<button onclick="descansar()">DESCANSAR</button>
 			<br /><br />
 			<button onclick="vinho.comprar()">COMPRAR GARRAFA</button>
-			<button onclick="abrirGarrafa()">ABRIR GARRAFA</button><br />
+			<button onclick="abrirGarrafa()">ABRIR GARRAFA</button>
+			<button onclick="encherTaca()">ENCHER TAÇA</button><br />
 			<br /><br />
 		</div>
 		<div id="div"></div>
@@ -95,6 +96,31 @@
 		} else if (taca.volume > 0) {
 			taca.descartar();
 		}
+	}
+
+	function descansar() {
+		var mensagem = ``;
+		var grauBebada = ``;
+		var bebeuDemais = pessoa.quantidadeBebida;
+		var descanso = pessoa.limiteAlcoolico / 5;
+		bebeuDemais = bebeuDemais - descanso;
+
+		if (bebeuDemais <= 0) {
+			grauBebada = `De boassa`;
+			mensagem += `Você se recuperou, já pode beber de novo. <br>`;
+			bebada = 0;
+		} else if (bebeuDemais >= pessoa.limiteAlcoolico) {
+			grauBebada = `Muito Louca`;
+			mensagem += `Você ainda está muito louca, descanse mais. <br>`;
+		} else {
+			grauBebada = `Bebada`;
+			mensagem += `Você ainda está bebada, melhor descansar mais. <br>`;
+		}
+
+		mensagem += `Quantidade ingerida: ${bebeuDemais}ml <br> Limite físico: ${pessoa.limiteAlcoolico}ml`;
+		div.innerHTML = mensagem;
+		pessoa.quantidadeBebida = bebeuDemais;
+		taBebada.innerHTML = `Grau alcoolico: ${grauBebada}`;
 	}
 
 	var vinho = {
@@ -219,5 +245,9 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+	}
+
+	.buttons {
+		text-align: center;
 	}
 </style>
